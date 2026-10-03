@@ -2,4 +2,3 @@ streamlit
 transformers>=4.40.0
 huggingface-hub
 sentencepiece
-torch==2.0.1+cpu
