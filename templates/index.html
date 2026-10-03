@@ -756,6 +756,25 @@
   </footer>
 
   <script>
+      async function getSummary() {
+      const text = document.getElementById("inputText").value;
+      const res = await fetch("/api/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+      const data = await res.json(); // safe now
+
+      if (data.error) {
+        alert("Error: " + data.error);
+      } else {
+        document.getElementById("summaryOutput").innerText = data.summary;
+        document.getElementById("statsOutput").innerText =
+          "Original Word Count: " + data.original_word_count + "\n" +
+          "Summary Word Count: " + data.summary_word_count + "\n" +
+          "Text Reduced By: " + data.reduction_percentage + "%";
+      }
+    }
     const SAMPLE_DATA = {
       healthcare_ai: "Artificial intelligence in healthcare is revolutionizing how medical professionals diagnose and treat complex diseases. Machine learning algorithms analyze intricate medical imaging datasets, such as MRI scans and radiological X-rays, with remarkable precision, often detecting subtle malignant lesions that could easily escape human observation. Furthermore, AI-powered predictive models assist hospitals in forecasting patient admission surges and optimizing vital resource allocation across intensive care units. Continuous remote patient monitoring through wearable biosensors enables timely clinical interventions for chronic condition management. Although these transformative technological advancements promise to elevate patient survival rates and lower administrative expenses, seamlessly integrating AI into clinical workflows necessitates addressing critical hurdles regarding patient data confidentiality, algorithmic bias, regulatory compliance, and physician oversight.",
       
@@ -765,6 +784,7 @@
     };
 
     function updateCounts() {
+      
       const text = document.getElementById("inputText").value.trim();
       const words = text ? text.split(/\s+/).length : 0;
       const chars = text.length;
