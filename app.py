@@ -3,15 +3,16 @@ from transformers import pipeline
 
 st.title("Smart Study Notes Generator")
 
-# Input text
+@st.cache_resource
+def load_summarizer():
+    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+
 text = st.text_area("Paste your paragraph here:")
 
-# Summarizer
 if st.button("Summarize") and text:
-    summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+    summarizer = load_summarizer()
     summary = summarizer(text, max_length=120, min_length=30, do_sample=False)[0]['summary_text']
 
-    # Show results
     st.subheader("Summary")
     st.write(summary)
 
