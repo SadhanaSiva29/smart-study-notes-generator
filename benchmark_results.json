@@ -1,0 +1,78 @@
+[
+  {
+    "original_text": "Artificial intelligence in healthcare is revolutionizing how medical professionals diagnose and treat complex diseases. Machine learning algorithms analyze intricate medical imaging datasets, such as MRI scans and radiological X-rays, with remarkable precision, often detecting subtle malignant lesions that could easily escape human observation. Furthermore, AI-powered predictive models assist hospitals in forecasting patient admission surges and optimizing vital resource allocation across intensive care units. Continuous remote patient monitoring through wearable biosensors enables timely clinical interventions for chronic condition management. Although these transformative technological advancements promise to elevate patient survival rates and lower administrative expenses, seamlessly integrating AI into clinical workflows necessitates addressing critical hurdles regarding patient data confidentiality, algorithmic bias, regulatory compliance, and physician oversight.",
+    "summary": "AI-powered predictive models assist hospitals in forecasting patient admission surges. Continuous remote patient monitoring through wearable biosensors enables timely clinical interventions for chronic condition management.",
+    "key_points": [
+      "AI-powered predictive models assist hospitals in forecasting patient admission surges.",
+      "Continuous remote patient monitoring through wearable biosensors enables timely clinical interventions for chronic condition management."
+    ],
+    "key_concepts": [
+      "patient",
+      "clinical",
+      "medical",
+      "revolutionizing",
+      "confidentiality",
+      "transformative"
+    ],
+    "original_word_count": 114,
+    "summary_word_count": 25,
+    "words_reduced": 89,
+    "percentage_reduction": 78.07,
+    "latency_seconds": 1.13,
+    "model_used": "Falconsai/text_summarization",
+    "id": "Test_01",
+    "domain": "Artificial Intelligence & Healthcare",
+    "topic": "AI-Driven Diagnostics and Clinical Decision Support"
+  },
+  {
+    "original_text": "The global transition toward renewable energy is accelerating rapidly in response to escalating climate change and the imperative to drastically reduce greenhouse gas emissions. Solar photovoltaic panels and wind turbines are now generating electricity at costs highly competitive with conventional fossil fuels, driving unprecedented investments across industrialized and developing economies alike. However, the inherent intermittency of wind and sunlight poses formidable engineering challenges for national electrical grids, requiring massive deployment of advanced grid-scale battery storage, pumped hydroelectric systems, and modernized high-voltage direct-current transmission networks. Transitioning away from legacy coal and gas infrastructure also carries significant socioeconomic repercussions, compelling policymakers to devise just transition frameworks that provide green workforce reskilling, energy equity, and economic diversification for displaced fossil fuel communities.",
+    "summary": "The global transition toward renewable energy is accelerating rapidly in response to escalating climate change. Solar photovoltaic panels and wind turbines are now generating electricity at costs highly competitive with conventional fossil fuels.",
+    "key_points": [
+      "The global transition toward renewable energy is accelerating rapidly in response to escalating climate change.",
+      "Solar photovoltaic panels and wind turbines are now generating electricity at costs highly competitive with conventional fossil fuels."
+    ],
+    "key_concepts": [
+      "transition",
+      "energy",
+      "fossil",
+      "wind",
+      "diversification",
+      "industrialized"
+    ],
+    "original_word_count": 119,
+    "summary_word_count": 33,
+    "words_reduced": 86,
+    "percentage_reduction": 72.27,
+    "latency_seconds": 1.52,
+    "model_used": "Falconsai/text_summarization",
+    "id": "Test_02",
+    "domain": "Environmental Science & Energy Systems",
+    "topic": "Renewable Energy Transition and Grid Modernization"
+  },
+  {
+    "original_text": "The James Webb Space Telescope represents an unprecedented technological leap in observational astronomy, offering humanity its deepest and most detailed view into the primordial cosmos. Equipped with high-resolution infrared detectors and an enormous gold-coated beryllium mirror, the observatory can pierce through dense interstellar dust clouds to observe the very first galaxies that coalesced just a few hundred million years following the Big Bang. In addition to probing cosmic origins, the telescope performs sophisticated atmospheric spectroscopy on exoplanets orbiting distant stellar systems, searching for molecular biosignatures such as water vapor, methane, and carbon dioxide. Operating at the Second Lagrange Point nearly one million miles from Earth, this flagship international mission is systematically dismantling long-held astrophysical assumptions while revolutionizing our understanding of stellar genesis and planetary habitability.",
+    "summary": "James Webb Space Telescope can pierce through dense interstellar dust clouds to observe the very first galaxies that coalescesced just a few hundred million years following the Big Bang.",
+    "key_points": [
+      "James Webb Space Telescope can pierce through dense interstellar dust clouds to observe the very first galaxies that coalescesced just a few hundred million years following the Big Bang.",
+      "The James Webb Space Telescope represents an unprecedented technological leap in observational astronomy.",
+      "The telescope performs sophisticated atmospheric spectroscopy on exoplanets orbiting distant stellar systems."
+    ],
+    "key_concepts": [
+      "million",
+      "stellar",
+      "high-resolution",
+      "revolutionizing",
+      "systematically",
+      "unprecedented"
+    ],
+    "original_word_count": 125,
+    "summary_word_count": 29,
+    "words_reduced": 96,
+    "percentage_reduction": 76.8,
+    "latency_seconds": 1.69,
+    "model_used": "Falconsai/text_summarization",
+    "id": "Test_03",
+    "domain": "Astrophysics & Space Exploration",
+    "topic": "James Webb Space Telescope & Early Universe Discoveries"
+  }
+]
