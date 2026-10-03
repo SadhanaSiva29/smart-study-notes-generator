@@ -9,7 +9,9 @@ reduction metrics, and vocabulary badges in real-time.
 import os
 from flask import Flask, render_template, request, jsonify
 from smart_study_notes import SmartStudyNotesGenerator
+from transformers import pipeline
 
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 app = Flask(__name__)
 
 # Initialize generator once during app startup
