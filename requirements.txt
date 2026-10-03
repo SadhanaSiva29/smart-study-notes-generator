@@ -2,5 +2,5 @@
 transformers>=4.40.0
 huggingface-hub
 sentencepiece>=0.2.0
-rich>=13.0.0
+streamlit
 Flask>=3.0.0
