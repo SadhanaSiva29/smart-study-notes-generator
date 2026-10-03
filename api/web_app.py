@@ -14,7 +14,6 @@ def summarize():
         summary_output = summarizer(text, max_length=120, min_length=30, do_sample=False)
         summary = summary_output[0]['summary_text']
 
-        # Word counts
         original_word_count = len(text.split())
         summary_word_count = len(summary.split())
         reduction_percentage = ((original_word_count - summary_word_count) / original_word_count) * 100
