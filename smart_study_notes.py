@@ -149,48 +149,9 @@ class SmartStudyNotesGenerator:
 
         return key_points
 
-    def generate_notes(
-        self,
-        paragraph: str,
-        target_summary_ratio: float = 0.40,
-        min_words: int = 15,
-        max_words: Optional[int] = None
-    ) -> Dict[str, Any]:
-        """
-        Processes a paragraph and returns summary, key points, word count statistics,
-        and the percentage reduction.
-
-        Args:
-            paragraph: The input paragraph string.
-            target_summary_ratio: Desired ratio of summary length relative to input.
-            min_words: Minimum word threshold for summary.
-            max_words: Optional explicit maximum word threshold.
-
-        Returns:
-            Dict containing original_text, summary, key_points, key_concepts,
-            original_word_count, summary_word_count, words_reduced, percentage_reduction,
-            and latency_seconds.
-        """
-        cleaned_input = self._clean_text(paragraph)
-        if not cleaned_input:
-            raise ValueError("Input paragraph cannot be empty.")
-
-        start_time = time.time()
-        orig_words = cleaned_input.split()
-        orig_word_count = len(orig_words)
-
-        # Determine dynamic length constraints
-        if max_words is None:
-            calculated_max = int(orig_word_count * target_summary_ratio)
-            max_tokens = max(35, min(calculated_max + 20, 150))
-        else:
-            max_tokens = max(30, max_words)
-
-        min_tokens = max(10, min(min_words, max_tokens - 10))
-
-        # T5 uses the "summarize: " task prefix
-        prompt = "summarize: " + cleaned_input
-
+    def _summarize_single_chunk(self, chunk: str, max_tokens: int, min_tokens: int) -> str:
+        """Summarize a single text chunk using the T5 model."""
+        prompt = "summarize: " + chunk
         inputs = self.tokenizer(
             prompt,
             return_tensors="pt",
@@ -208,10 +169,60 @@ class SmartStudyNotesGenerator:
                 no_repeat_ngram_size=3,
                 early_stopping=True
             )
+        return self.tokenizer.decode(output_tokens[0], skip_special_tokens=True)
 
-        raw_summary = self.tokenizer.decode(output_tokens[0], skip_special_tokens=True)
+    def generate_notes(
+        self,
+        paragraph: str,
+        target_summary_ratio: float = 0.40,
+        min_words: int = 15,
+        max_words: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """
+        Processes any paragraph/document and returns summary, key points,
+        word count statistics, and the percentage reduction.
+        Handles short text, standard paragraphs, and long multi-paragraph texts.
+        """
+        cleaned_input = self._clean_text(paragraph)
+        if not cleaned_input:
+            raise ValueError("Input paragraph cannot be empty.")
+
+        start_time = time.time()
+        orig_words = cleaned_input.split()
+        orig_word_count = len(orig_words)
+
+        # Dynamic token bounds based on input length
+        if orig_word_count <= 25:
+            max_tokens = max(6, int(orig_word_count * 0.75))
+            min_tokens = max(3, int(orig_word_count * 0.3))
+        elif max_words is not None:
+            max_tokens = max(15, max_words)
+            min_tokens = max(8, min(min_words, max_tokens - 5))
+        else:
+            calculated_max = int(orig_word_count * target_summary_ratio)
+            max_tokens = max(25, min(calculated_max + 15, 140))
+            min_tokens = max(10, min(min_words, max_tokens - 10))
+
+        # Check if text is long (> 350 words) requiring multi-chunk summarization
+        if orig_word_count > 350:
+            words = orig_words
+            chunks = []
+            chunk_size = 280
+            for i in range(0, len(words), chunk_size):
+                chunks.append(" ".join(words[i:i + chunk_size]))
+
+            chunk_summaries = []
+            per_chunk_max = max(30, int(max_tokens / len(chunks)) + 15)
+            per_chunk_min = max(10, int(min_tokens / len(chunks)))
+            for ch in chunks:
+                ch_sum = self._summarize_single_chunk(ch, max_tokens=per_chunk_max, min_tokens=per_chunk_min)
+                chunk_summaries.append(ch_sum.strip())
+
+            raw_summary = " ".join(chunk_summaries)
+        else:
+            raw_summary = self._summarize_single_chunk(cleaned_input, max_tokens=max_tokens, min_tokens=min_tokens)
+
         summary = self._format_sentence_endings(raw_summary)
-
         summary_words = summary.split()
         summary_word_count = len(summary_words)
 
@@ -222,7 +233,6 @@ class SmartStudyNotesGenerator:
         else:
             percentage_reduction = 0.0
 
-        # Guard against edge-cases where summary is longer than a 5-word sentence
         percentage_reduction = max(0.0, percentage_reduction)
 
         # Generate structured key points & vocabulary concepts

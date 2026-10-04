@@ -1,28 +1,18 @@
-from flask import Flask, request, jsonify
-from transformers import pipeline
+"""
+Vercel / Serverless entrypoint for Smart Study Notes Generator
+==============================================================
+Imports the configured Flask app from the project root.
+"""
+import sys
+from pathlib import Path
 
-app = Flask(__name__)
-summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
-@app.route("/api/summarize", methods=["POST"])
-def summarize():
-    data = request.get_json()
-    text = data.get("text", "")
-    if not text:
-        return jsonify({"error": "No text provided"}), 400
-    try:
-        summary_output = summarizer(text, max_length=120, min_length=30, do_sample=False)
-        summary = summary_output[0]['summary_text']
+from web_app import app
 
-        original_word_count = len(text.split())
-        summary_word_count = len(summary.split())
-        reduction_percentage = ((original_word_count - summary_word_count) / original_word_count) * 100
-
-        return jsonify({
-            "summary": summary,
-            "original_word_count": original_word_count,
-            "summary_word_count": summary_word_count,
-            "reduction_percentage": round(reduction_percentage, 2)
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
